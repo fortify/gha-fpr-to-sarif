@@ -1,0 +1,45 @@
+{
+  "name": "fpr-to-sarif",
+  "version": "1.0.0",
+  "description": "GitHub Action to convert FPR files to SARIF format",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "ncc build src/main.ts",
+    "lint": "eslint . --ext .ts,.tsx",
+    "format": "prettier --write **/*.ts"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run build && git add dist/"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fortify-actions/fpr-to-sarif.git"
+  },
+  "keywords": [
+    "Fortify",
+    "FPR",
+    "sarif",
+    "security"
+  ],
+  "author": "Ruud Senden",
+  "contributors": [
+    "Matt Stanchek"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fortify-actions/fpr-to-sarif/issues"
+  },
+  "homepage": "https://github.com/fortify-actions/fpr-to-sarif#readme",
+  "dependencies": {
+    "@actions/core": "^1.2.4",
+    "@actions/exec": "^1.0.4",
+    "fs-extra": "^9.0.0",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^9.0.1",
+    "@types/node": "^14.0.9"
+  }
+}

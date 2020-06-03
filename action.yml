@@ -1,0 +1,15 @@
+name: 'fpr-to-sarif'
+description: 'Convert Fortify FPR files to SARIF format'
+author: 'Fortify'
+inputs:
+  input:
+    description: 'Location of FPR file or directory containing FPR files'
+    required: true
+    default: '.'
+  outputDir:
+    description: 'Directory where generated SARIF files will be stored'
+    required: true
+    default: '.'
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
