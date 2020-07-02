@@ -3278,13 +3278,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const core = __importStar(__webpack_require__(612));
 const exec = __importStar(__webpack_require__(171));
 const fs = __importStar(__webpack_require__(517));
-const os = __importStar(__webpack_require__(87));
 const path = __importStar(__webpack_require__(622));
 function installSarifMultitool() {
     return __awaiter(this, void 0, void 0, function* () {
-        const toolPath = fs.mkdtempSync(path.join(os.tmpdir(), 'sarif-'));
-        yield exec.exec('dotnet', ['tool', 'install', '--tool-path', toolPath, 'Sarif.Multitool']);
-        return path.join(toolPath, 'sarif');
+        yield exec.exec('npm', ['install', '-g', '@microsoft/sarif-multitool']);
     });
 }
 function getOutput(fpr) {
@@ -3295,20 +3292,20 @@ function getOutput(fpr) {
     const baseFileName = path.basename(fpr, '.fpr');
     return `${outputDir}/${baseFileName}.sarif`;
 }
-function convertFile(multitoolPath, fprFile) {
+function convertFile(fprFile) {
     return __awaiter(this, void 0, void 0, function* () {
-        exec.exec(multitoolPath, ['convert', fprFile, '-t', 'FortifyFpr', '-o', getOutput(fprFile), '-f', '-p']);
+        exec.exec('npx', ['@microsoft/sarif-multitool', 'convert', fprFile, '-t', 'FortifyFpr', '-o', getOutput(fprFile), '-f', '-p']);
     });
 }
-function convertFiles(multitoolPath, fprFiles) {
+function convertFiles(fprFiles) {
     return __awaiter(this, void 0, void 0, function* () {
-        fprFiles.forEach(fprFile => convertFile(multitoolPath, fprFile));
+        fprFiles.forEach(fprFile => convertFile(fprFile));
     });
 }
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         core.info("Running main()");
-        installSarifMultitool().then(function (multitoolPath) {
+        installSarifMultitool().then(function () {
             return __awaiter(this, void 0, void 0, function* () {
                 const input = core.getInput('input');
                 if (fs.lstatSync(input).isDirectory()) {
@@ -3318,10 +3315,10 @@ function main() {
                     if (fprFiles.length === 0) {
                         throw `No FPR files found in "${input}"`;
                     }
-                    return yield convertFiles(multitoolPath, fprFiles);
+                    return yield convertFiles(fprFiles);
                 }
                 else {
-                    return yield convertFiles(multitoolPath, [input]);
+                    return yield convertFiles([input]);
                 }
             });
         });
