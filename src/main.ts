@@ -18,7 +18,7 @@ function getOutput(fpr: string) : string {
 }
 
 async function convertFile(fprFile : string) : Promise<void> {
-    exec.exec('npx', ['@microsoft/sarif-multitool', 'convert', fprFile, '-t', 'FortifyFpr', '-o', './sarif/output.sarif', '-f', '-p', '--normalize-for-github-dsp']);
+    exec.exec('npx', ['@microsoft/sarif-multitool', 'convert', fprFile, '-t', 'FortifyFpr', '-o', getOutput(fprFile), '-f', '-p', '--normalize-for-github-dsp']);
 }
 
 async function convertFiles(fprFiles : string[]) : Promise<void> {
